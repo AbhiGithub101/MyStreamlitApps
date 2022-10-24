@@ -1,3 +1,4 @@
+import plotly
 import streamlit as st
 import calendar
 from datetime import datetime
