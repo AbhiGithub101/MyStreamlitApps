@@ -2,7 +2,7 @@
 import streamlit as st
 import calendar
 from datetime import datetime
-import plotly.graph_objects as go
+# import plotly.graph_objects as go
 from streamlit_option_menu import option_menu
 
 
@@ -58,38 +58,38 @@ if selected=='Data Submission':
             st.write(incomes)
             st.write(expenses)
             st.success('Data Saved')
-elif selected=='Graphs':
-    st.subheader('Visualization')
-    with st.form('Saved Periods'):
-        # to do get periods from database
-        period = st.selectbox('Period', ['2022_March'])
-        submitted = st.form_submit_button('Submit')
-        if submitted:
-            # get data from database
-            comment = 'Some comment'
-            incomes = {'Salary' : 200,'Blog' : 300,'Other Income' : 300}
-            expenses = {'Rent':100, 'Utilities':200, 'Saving':100, 'Groceries':150}
-            # create metrics
-            total_income = sum(incomes.values())
-            total_expense = sum(expenses.values())
-            remaining_budget = total_income - total_expense
-            col1,col2,col3 =st.columns([1,1,1])
-            with col1:
-                col1 = st.metric('Total Income',value=total_income)
-            with col2:
-                col2 = st.metric('Total Expense',value=total_expense)
-            with col3:
-                col3 = st.metric('Remaining Budget',value=remaining_budget)
-            st.text(comment)
-            label = list(incomes.keys()) + ['Total Income'] + list(expenses.keys())
-            source = list(range(len(incomes))) + [len(incomes)] * len(expenses)
-            value = list(incomes.values()) + [total_income] + list(expenses.values())
-            target =[len(incomes) ] * len (incomes) + [label.index(expense) for expense in expenses.keys()]
-            # Data to dict, dict to sankey
-            link = dict(source=source, target=target, value=value)
-            node = dict(label=label, pad=20, thickness=30, color="#E694FF")
-            data = go.Sankey(link = link, node = node)
-            fig = go.Figure(data)
-            fig.update_layout(margin=dict(l=0, r=0, t=5, b=5))
-            st.plotly_chart(fig,use_container_width=True)
+# elif selected=='Graphs':
+#     st.subheader('Visualization')
+#     with st.form('Saved Periods'):
+#         # to do get periods from database
+#         period = st.selectbox('Period', ['2022_March'])
+#         submitted = st.form_submit_button('Submit')
+#         if submitted:
+#             # get data from database
+#             comment = 'Some comment'
+#             incomes = {'Salary' : 200,'Blog' : 300,'Other Income' : 300}
+#             expenses = {'Rent':100, 'Utilities':200, 'Saving':100, 'Groceries':150}
+#             # create metrics
+#             total_income = sum(incomes.values())
+#             total_expense = sum(expenses.values())
+#             remaining_budget = total_income - total_expense
+#             col1,col2,col3 =st.columns([1,1,1])
+#             with col1:
+#                 col1 = st.metric('Total Income',value=total_income)
+#             with col2:
+#                 col2 = st.metric('Total Expense',value=total_expense)
+#             with col3:
+#                 col3 = st.metric('Remaining Budget',value=remaining_budget)
+#             st.text(comment)
+#             label = list(incomes.keys()) + ['Total Income'] + list(expenses.keys())
+#             source = list(range(len(incomes))) + [len(incomes)] * len(expenses)
+#             value = list(incomes.values()) + [total_income] + list(expenses.values())
+#             target =[len(incomes) ] * len (incomes) + [label.index(expense) for expense in expenses.keys()]
+#             # Data to dict, dict to sankey
+#             link = dict(source=source, target=target, value=value)
+#             node = dict(label=label, pad=20, thickness=30, color="#E694FF")
+#             data = go.Sankey(link = link, node = node)
+#             fig = go.Figure(data)
+#             fig.update_layout(margin=dict(l=0, r=0, t=5, b=5))
+#             st.plotly_chart(fig,use_container_width=True)
 
