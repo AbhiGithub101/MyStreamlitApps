@@ -7,6 +7,10 @@ page_icon = ':euro:'
 st.set_page_config(page_title=page_title,layout=layout,page_icon=page_icon)
 
 st.title('Sales Analysis - Console Flare')
+st.subheader('''Project:
+In this project, we are going to analyze 12 months of data of sales. 
+We will learn how to clean, manage and analyze the 
+dataset to find some meaningful information.''')
 df = pd.read_csv('Sales.csv')
 with st.sidebar:
     show_data = st.multiselect('Show Data',options=list(df.columns))
