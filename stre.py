@@ -1,32 +1,45 @@
 import streamlit as st
+import pandas as pd
 
+page_title = 'Sales - Analysis'
+layout = 'centered'
+page_icon = ':euro:'
+st.set_page_config(page_title=page_title,layout=layout,page_icon=page_icon)
 
+st.title('Sales Analysis - Console Flare')
+df = pd.read_csv('Sales.csv')
+with st.sidebar:
+    show_data = st.multiselect('Show Data',options=list(df.columns))
+    categorical = st.selectbox('Categorical',options=list(df.columns))
+    numerical = st.selectbox('Numerical',options=list(df.columns))
+    col1,col2 = st.columns([1,1])
+    with col1:
+        click1 = st.button('Sum')
+    with col2:
+        click2=st.button('Count')
+    range = st.slider('Products Sold Together',0,5)
 
-st.title('BMI Calculator')
-st.subheader('This application is designed to calculate BMI')
-name = st.text_input('Name',placeholder='Enter Your Name')
-gender = st.radio('Gender',('Male','Female'))
-if(gender=='Male'):
-    initial = 'Mr'
-else:
-    initial = 'Mrs'
-if(name!=''):
-    st.text(f'Hello {initial} {name}, Please enter appropriate fields.')
+if(show_data):
+    st.dataframe(df[show_data])
 
+if(click1):
+    st.dataframe(df.groupby(categorical)[numerical].sum())
+    st.bar_chart(df.groupby(categorical)[numerical].sum().sort_values(ascending=False))
+elif(click2):
+    st.dataframe(df.groupby(categorical)[numerical].count())
+    st.bar_chart(df.groupby(categorical)[numerical].count().sort_values(ascending=False))
 
-weight = st.slider('Range of Weight',min_value=20,max_value=200)
-height = st.slider('Range of Height',min_value=100,max_value=300)
-click = st.button('Calculate BMI')
-if(click==True):
-    bmi = weight/height**2*10000
-    st.subheader(f'BMI : {round(bmi)}')
+# All Duplicate Order ID
+if(range):
+    df['Grouped'] = df.groupby('Order ID')['Product'].transform(lambda x : ','.join(x))
 
-    if(bmi>=30):
-        st.title('Obese')
-    elif(bmi>=25):
-        st.title('Over Weight')
-    elif(bmi>=18):
-        st.title('Normal Weight')
-        st.balloons()
-    else:
-        st.title('Underweight')
+    from itertools import combinations
+    from collections import Counter
+
+    count = Counter()
+    row_list = []
+    for row in df['Grouped']:
+        row_list = row.split(',')
+        count.update(Counter(combinations(row_list, range)))
+
+    st.dataframe(count.most_common(10))
