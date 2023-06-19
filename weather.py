@@ -1,5 +1,4 @@
 import pandas as pd
-from bs4 import BeautifulSoup
 import requests
 import streamlit as st
 api_key = 'b3eda79fa97e412bbe382506231906'
